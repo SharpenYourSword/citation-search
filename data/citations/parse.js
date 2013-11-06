@@ -11,7 +11,7 @@ var filenames = _.filter(fs.readdirSync('../courtlistener'), function(f) {
 
 var citationsFromOpinion = function(opinion) {
   var text = opinion['_'];
-  return Citation.find(text)['citations'];
+  return Citation.find(text, {excerpt:200})['citations'];
 };
 
 var saveCitationsFromFilename = function(filename) {
