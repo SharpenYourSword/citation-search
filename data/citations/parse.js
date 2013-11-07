@@ -28,6 +28,9 @@ var saveCitationsFromFilename = function(filename) {
         return _.map(uscCitations, function(citation) {
           citation['case_name'] = opinion['$']['case_name'];
           citation['case_id'] = opinion['$']['id'];
+          var year = filename.split('-')[1].split('.xml')[0];
+          citation['case_year'] = year;
+          citation['courtlistener_path'] = opinion['$']['path'];
 
           return citation;
         });

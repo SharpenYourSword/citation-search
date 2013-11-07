@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <form method="GET" action="/">
+      <input name="q" type="text" value="<%= query %>"/>
+      <input type="submit" />
+    </form>
+    <hr />
+    <h3><%= results["matches"] %> results for "<%= query %>" (<i><%= results["search_time"] %> seconds</i>):</h3>
+
+    <% results["results"].each do |result| %>
+    <h4><a href="<%= result['courtlistener_url'] %>"><%= result["case_name"] %> (<%= result["case_year"] %>)</a></h4>
+    <p>Citation: <%= result["match"] %></p>
+    <p>Excerpt: <%= result["excerpt"] %></p>
+    <% end %>
+  </body>
+
+</html>

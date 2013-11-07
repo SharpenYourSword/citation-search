@@ -1,2 +1,3 @@
 data/citations/**.json
 data/courtlistener/**.xml
+config.rb
