@@ -22,10 +22,15 @@ var saveCitationsFromFilename = function(filename) {
       opinions = result['opinions']['opinion'];
       allCitations = _.map(opinions, function(opinion) {
         var citations = citationsFromOpinion(opinion);
+        /*
         var uscCitations = _.filter(citations, function(citation) {
           return citation['type'] === 'usc';
         });
-        return _.map(uscCitations, function(citation) {
+        */
+        var uscAndCfrCitations = _.filter(citations, function(citation) {
+          return citation['type'] === 'usc' || citation['type'] === 'cfr';
+        });
+        return _.map(uscAndCfrCitations, function(citation) {
           citation['case_name'] = opinion['$']['case_name'];
           citation['case_id'] = opinion['$']['id'];
           var year = filename.split('-')[1].split('.xml')[0];

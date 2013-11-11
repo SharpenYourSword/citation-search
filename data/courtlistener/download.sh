@@ -1,15 +1,9 @@
-# downloads and unzips all Supreme Court opinions from 2007 to 2012
+for jurisdiction in scotus ca1 ca2 ca3 ca4 ca5 ca6 ca7 ca8 ca9 ca10 ca11 cadc cafc; do
+  for i in {1980..2012}; do 
+    curl -o $jurisdiction-$i.xml.gz -L https://www.courtlistener.com/dump-api/$i/$jurisdiction.xml.gz
+  done
 
-curl -o scotus-2012.xml.gz -L https://www.courtlistener.com/dump-api/2012/scotus.xml.gz
-curl -o scotus-2011.xml.gz -L https://www.courtlistener.com/dump-api/2011/scotus.xml.gz
-curl -o scotus-2010.xml.gz -L https://www.courtlistener.com/dump-api/2010/scotus.xml.gz
-curl -o scotus-2009.xml.gz -L https://www.courtlistener.com/dump-api/2009/scotus.xml.gz
-curl -o scotus-2008.xml.gz -L https://www.courtlistener.com/dump-api/2008/scotus.xml.gz
-curl -o scotus-2007.xml.gz -L https://www.courtlistener.com/dump-api/2007/scotus.xml.gz
-
-gzip -d scotus-2012.xml.gz
-gzip -d scotus-2011.xml.gz
-gzip -d scotus-2010.xml.gz
-gzip -d scotus-2009.xml.gz
-gzip -d scotus-2008.xml.gz
-gzip -d scotus-2007.xml.gz
+  for i in {1980..2012}; do 
+    gzip -d $jurisdiction-$i.xml.gz
+  done
+done
