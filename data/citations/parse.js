@@ -5,9 +5,15 @@ require('citation');
 
 var parser = new xml2js.Parser();
 
-var filenames = _.filter(fs.readdirSync('../courtlistener'), function(f) {
-  return f !== 'download.sh';
-});
+var endsWithExtension = function(filename, extension) {
+  return filename.split('.').reverse()[0] === extension;
+};
+
+var endsWithXml = function(filename) {
+  return endsWithExtension(filename, 'xml');
+};
+
+var filenames = _.filter(fs.readdirSync('../courtlistener'), endsWithXml).reverse();
 
 var citationsFromOpinion = function(opinion) {
   var text = opinion['_'];
@@ -18,19 +24,18 @@ var saveCitationsFromFilename = function(filename) {
   var allCitations;
   var path = '../courtlistener/' + filename;
   fs.readFile(path, function(err, data) {
+    var newFilename = filename.split('.xml')[0] + '.json';
     parser.parseString(data, function(err, result) {
       opinions = result['opinions']['opinion'];
       allCitations = _.map(opinions, function(opinion) {
         var citations = citationsFromOpinion(opinion);
-        /*
         var uscCitations = _.filter(citations, function(citation) {
           return citation['type'] === 'usc';
         });
-        */
         var uscAndCfrCitations = _.filter(citations, function(citation) {
           return citation['type'] === 'usc' || citation['type'] === 'cfr';
         });
-        return _.map(uscAndCfrCitations, function(citation) {
+        return _.map(uscCitations, function(citation) {
           citation['case_name'] = opinion['$']['case_name'];
           citation['case_id'] = opinion['$']['id'];
           var year = filename.split('-')[1].split('.xml')[0];
@@ -43,7 +48,7 @@ var saveCitationsFromFilename = function(filename) {
     });
 
     var output = JSON.stringify(allCitations);
-    var newFilename = filename.split('.xml')[0] + '.json';
+    //var newFilename = filename.split('.xml')[0] + '.json';
     fs.writeFile(newFilename, output, function(err) {
       if(err) {
         console.log(err);
